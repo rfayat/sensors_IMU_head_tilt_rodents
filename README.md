@@ -7,12 +7,12 @@ If you use parts of this code in a scientific publication, please be kind enough
 ```bibtex
 Bibtex reference, to be done upon publication
 ```
-## Installation
+## Installation
 ### Installation of the requirements
 
 ### Testing the installation
 
-### Troubleshooting
+### Troubleshooting
 
 
 ## Code overview
@@ -20,22 +20,22 @@ Bibtex reference, to be done upon publication
 ### Independent packages
 To ensure reproducibility, the modules written for this work were added as frozen submodules in their current states here but you can also feel free to have a look at or contribute to the respective corresponding repositories.
 
-#### [rfayat/angle_visualization](https://github.com/rfayat/angle_visualization)
+#### [rfayat/angle_visualization](https://github.com/rfayat/angle_visualization)
 
-#### [rfayat/SphereProba](https://github.com/rfayat/SphereProba)
+#### [rfayat/SphereProba](https://github.com/rfayat/SphereProba)
 
-#### [Mayitzin/ahrs](https://github.com/Mayitzin/ahrs) and its fork [rfayat/ahrs](https://github.com/rfayat/ahrs)
+#### [Mayitzin/ahrs](https://github.com/Mayitzin/ahrs) and its fork [rfayat/ahrs](https://github.com/rfayat/ahrs)
 
-#### [rfayat/madgwick_imu](https://github.com/rfayat/madgwick_imu)
+#### [rfayat/madgwick_imu](https://github.com/rfayat/madgwick_imu)
 
-### Additional code used for the analysis
-#### Numerical optimization of accelerometer offset values
-#### Detection of active/immobile periods
-#### Extraction of features describing lesion-induced deficits
+### Additional code used for the analysis
+#### Numerical optimization of accelerometer offset values
+#### Detection of active/immobile periods
+#### Extraction of features describing lesion-induced deficits
 
 
-## Examples of processing pipelines on data samples
-### Accelerometer and gyroscope offset computation
-### Comparison of mocap and IMU-based head-tilt estimates
-### Plotting Head-tilt maps
-### IMU-extracted features describing lesion-induced deficits
+## Examples of processing pipelines on data samples
+### Accelerometer and gyroscope offset computation
+### Comparison of mocap and IMU-based head-tilt estimates
+### Plotting Head-tilt maps
+### IMU-extracted features describing lesion-induced deficits
