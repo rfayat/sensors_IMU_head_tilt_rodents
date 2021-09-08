@@ -1,0 +1,12 @@
+[submodule "madgwick_imu"]
+	path = madgwick_imu
+	url = https://github.com/rfayat/madgwick_imu.git
+[submodule "SphereProba"]
+	path = SphereProba
+	url = https://github.com/rfayat/SphereProba.git
+[submodule "angle_visualization"]
+	path = angle_visualization
+	url = https://github.com/rfayat/angle_visualization.git
+[submodule "ahrs"]
+	path = ahrs
+	url = https://github.com/rfayat/ahrs
