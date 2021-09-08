@@ -8,8 +8,14 @@ If you use parts of this code in a scientific publication, please be kind enough
 Bibtex reference, to be done upon publication
 ```
 ## Installation
-### Installation of the requirements
+Download the repository using git and change your working directory to  the resulting folder as follows :
+```bash
+$ git clone --recursive https://github.com/rfayat/sensors_IMU_head_tilt_rodents.git
+$ cd sensors_IMU_head_tilt_rodents
+```
+The `--recursive` tag added to the `git clone` command ensures the content of the submodules will also be downloaded.
 
+### Installation of the requirements
 ### Testing the installation
 
 ### Troubleshooting
@@ -41,8 +47,25 @@ This package consists in a Cython (i.e. compiled) implementation of the Madgwick
 Some of the credit for this package goes to [ghyomm](https://github.com/ghyomm), who provided his custom Rcpp implementation used as a starting point for writting the Cython code as well as to the [original C++](https://github.com/xioTechnologies/Fusion) code from which this implementation derives.
 
 ### Additional code used for the analysis
-#### Numerical optimization of accelerometer offset values
+A few additional functions / classes are available in the [imu_helpers](imu_helpers) folder. To use it, simply work from the repositories folder or add it to your python path environment variable.
+
+#### Offset values estimates
+After performing a multi-point tumble test, as described in the paper, the TODO
+
+
 #### Detection of active/immobile periods
+The `get_immobility` function implements the pipeline for detecting immobility periods presented in the original article, have a look at [its documentation](imu_helpers/immobility_detection.py) for more.
+
+```python
+import numpy as np
+from imu_helpers import get_immobility
+SR = 300.  # sampling rate in Herz
+# gyr is a (n_samples, 3) array of x, y, z gyroscope values
+# degrees by seconds
+gyr_norm = np.linalg.norm(gyr, axis=1)
+is_immobile = get_immobility(gyr_norm, sr=SR)
+```
+
 #### Extraction of features describing lesion-induced deficits
 
 
