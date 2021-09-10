@@ -1,8 +1,25 @@
-"""A few numpy helper functions for the processing pipelines.
+"""A few numpy and scipy helper functions for the processing pipelines.
 
 Author: Romain Fayat, March 2021
 """
 import numpy as np
+from scipy.signal import butter, filtfilt
+
+
+def butter_lowpass(cutoff, fs, order=2):
+    "Create a lowpass filter."
+    nyq = 0.5 * fs
+    normal_cutoff = cutoff / nyq
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    return b, a
+
+
+def butter_lowpass_filter(data, cutoff, fs, order=5):
+    "Apply a lowpass filter to a time series."
+    b, a = butter_lowpass(cutoff, fs, order=order)
+    # Forward and backward filtering to preserve the phase of the signal
+    y = filtfilt(b, a, data)
+    return y
 
 
 def index_true_intervals(arr):
@@ -12,6 +29,47 @@ def index_true_intervals(arr):
     right_boundaries = np.append(arr[:-1] & (~arr[1:]), arr[-1])
     right_boundaries_idx = np.where(right_boundaries)[0]
     return left_boundaries_idx, right_boundaries_idx
+
+
+def get_interval_number(arr):
+    """From an array of boolean, attribute a number to each True interval.
+
+    This function returns an array of integers of same length as arr with the,
+    with the interval number of each element. False values are set to -1.
+
+    Example:
+    -------
+    >>> get_interval_number(np.array([False, False, True, True, False, True],
+                            dtype=bool))
+    array([-1, -1, 0, 0, -1, 1])
+
+    """
+    interval_number = np.full(len(arr), -1, dtype=int)
+    left_boundaries_idx, right_boundaries_idx = index_true_intervals(arr)
+    intervals_durations = right_boundaries_idx - left_boundaries_idx + 1
+    interval_number[arr] = np.repeat(np.arange(len(intervals_durations)),
+                                     intervals_durations)
+    return interval_number
+
+
+def apply_function_to_intervals(X, condition, f, **kwargs):
+    """Apply f to X for each interval of contiguous True values of condition.
+
+    Example:
+    -------
+    >>> apply_function_to_intervals(np.arange(5),
+    ...                             np.array([1, 1, 0, 1, 0]),
+    ...                             np.mean)
+    array([0.5, 3. ])
+
+    """
+    boundaries = index_true_intervals(condition)
+    n_intervals = len(boundaries[0])
+    output = np.full(n_intervals, np.nan)
+    # Loop over each interval of True values
+    for i, (start, stop) in enumerate(zip(*boundaries)):
+        output[i] = f(X[start:stop + 1], **kwargs)
+    return output
 
 
 def dilate_boolean(arr, width):
