@@ -16,10 +16,26 @@ $ cd sensors_IMU_head_tilt_rodents
 The `--recursive` tag added to the `git clone` command ensures the content of the submodules will also be downloaded.
 
 ### Installation of the requirements
+The submodule `angle_visualization` depends on [cartopy](https://scitools.org.uk/cartopy/docs/latest/) which might require a few extra steps before running the installation (i.e. installation of geos, see for instance [here](https://stackoverflow.com/a/56956172/12841990)).
+
+It is recommended to use a dedicated [conda](https://docs.conda.io) environment to handle the installation of the requirements. The installation of [cartopy](https://scitools.org.uk/cartopy/docs/latest/) with pip is known to sometimes cause issues (see [here](https://stackoverflow.com/a/53745635/12841990) for instance).
+
+From the cloned repository's folder, create a conda environment, activate it and install the additional submodules as follows:
+
+```bash
+$ # Create an environment from the environment.yml file
+$ conda env create
+$ conda activate fayat_et_al
+$ # Compilation of the cython code
+$ cd madgwick_imu
+$ python setup.py build_ext --inplace
+$ cd ..
+$ # Installation of the standalone packages
+$ pip install ./madgwick_imu ./SphereProba ./angle_visualization
+```
+
 ### Testing the installation
-
-### Troubleshooting
-
+WIP: Clean tests still need to be written for the submodules, for now you can test your installation by running the example notebooks.
 
 ## Code overview
 
@@ -34,7 +50,7 @@ Fit and manipulate a few probability distribution functions on the unit S2 spher
 
 
 #### [Mayitzin/ahrs](https://github.com/Mayitzin/ahrs) and its fork [rfayat/ahrs](https://github.com/rfayat/ahrs)
-The [ahrs package](https://ahrs.readthedocs.io), developped by [Mayitzin](https://github.com/Mayitzin) is a great, extensive and amazingly documented collection of Attitude and Heading Reference Systems (AHRS) filters in pure python. Its vocation is more educational than focused on efficiency, resulting in a pure python implementation which makes it painfully slow for long times series (it is based on simple `for` loops over the time series for the iterative filters).
+The [ahrs package](https://ahrs.readthedocs.io), developped by [Mayitzin](https://github.com/Mayitzin) is a great, extensive and amazingly documented collection of Attitude and Heading Reference Systems (AHRS) filters in pure python. Its vocation is more educational than focused on efficiency, resulting in a very readable pure python implementation whose execution is relatively slow for long times series (`for` loops over the time series for the iterative filters).
 
 In order to perform the parameter optimization presented in the paper for the [Madgwick](https://ahrs.readthedocs.io/en/latest/filters/madgwick.html), [Mahony](https://ahrs.readthedocs.io/en/latest/filters/mahony.html) and [EKF](https://ahrs.readthedocs.io/en/latest/filters/ekf.html) filters in a reasonable amount of time given the size of the dataset (~1M data samples) while leveraging [ahrs](https://ahrs.readthedocs.io)'s great python API, the code for these filters was wrapped in a custom [numba jitclass](https://numba.pydata.org/numba-doc/latest/user/jitclass.html), enabling code compilation and thus sizeable shrinkage of the execution time, to the cost of adding an overhead to the computations (a bit more information,  execution time benchmarking, and also the reasons for not opening a pull request to [Mayitzin/ahrs](https://github.com/Mayitzin/ahrs), can be found [here](https://github.com/Mayitzin/ahrs/discussions/35)).
 
