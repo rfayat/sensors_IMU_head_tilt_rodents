@@ -65,11 +65,12 @@ def apply_function_to_intervals(X, condition, f, **kwargs):
     """
     boundaries = index_true_intervals(condition)
     n_intervals = len(boundaries[0])
-    output = np.full(n_intervals, np.nan)
+    # Preallocate the output as a list to allow for multidimensional outputs
+    output = [np.nan for _ in range(n_intervals)]
     # Loop over each interval of True values
     for i, (start, stop) in enumerate(zip(*boundaries)):
         output[i] = f(X[start:stop + 1], **kwargs)
-    return output
+    return np.array(output)
 
 
 def dilate_boolean(arr, width):
