@@ -7,6 +7,9 @@ If you use parts of this code in a scientific publication, please be kind enough
 ```bibtex
 Bibtex reference, to be done upon publication
 ```
+
+If you find a bug or want me to add code for an additional specific pipeline presented in the paper, feel free to open an issue on github, I'll do my best to process your request in a reasonable amount of time.
+
 ## Installation
 Download the repository using git and change your working directory to  the resulting folder as follows :
 ```bash
@@ -66,8 +69,19 @@ Some of the credit for this package goes to [ghyomm](https://github.com/ghyomm),
 A few additional functions / classes are available in the [imu_helpers](imu_helpers) folder. To use it, simply work from the repositories folder or add it to your python path environment variable.
 
 #### Offset values estimates
-After performing a multi-point tumble test, as described in the paper, the TODO
+After performing a multi-point tumble test, as described in the paper, the corresponding data can be feed to `IMU_Calibrator` defined in [imu_helpers.offset_computation](imu_helpers/offset_computation.py) to compute an estimate of the accelerometer and gyroscope offsets using the optimization pipeline described in the paper as follows:
 
+```python
+from imu_helpers import IMU_Calibrator
+# n_static_positions is an integer corresponding to the number of orientations
+# in which the sensor was left static during calibration
+c = IMU_Calibrator(sr=...,  # Sampling rate, in Hz
+                   n_static_positions=...)
+# Compute the offsets from the multi-point tumble test inertial data
+c.compute_offsets(acc, gyr)
+# The acc and gyr offset estimates are now properties of `c`
+print(c.acc_offsets, c.gyr_offsets)
+```
 
 #### Detection of active/immobile periods
 The `get_immobility` function implements the pipeline for detecting immobility periods presented in the original article, have a look at [its documentation](imu_helpers/immobility_detection.py) for more.
@@ -82,11 +96,16 @@ gyr_norm = np.linalg.norm(gyr, axis=1)
 is_immobile = get_immobility(gyr_norm, sr=SR)
 ```
 
-#### Extraction of features describing lesion-induced deficits
+Alternatively, you can detect immobility periods using a threshold on the smoothed gyroscope norm using the `get_immobility_smooth` function. This method has the advantage of having only two parameters to set (instead of 3 for `get_immobility`) and to avoid potential false positive in particular during episodes yielding relatively high-frequency signals. These advantages however come to the cost of having boundaries a bit less sharp due to the Gaussian kernel applied to the gyroscope norm. I personally recommend you using `get_immobility_smooth` rather than `get_immobility` if you don't mind systematically adding a *safety margin* around active periods.
 
+#### Extraction of features describing lesion-induced deficits
+A few helper functions for dealing with 3D angles are available in [head_tilt_features.py](imu_helpers/head_tilt_features.py), example use is shown in [the corresponding notebook](notebooks/head_tilt_features.ipynb).
 
 ## Examples of processing pipelines on data samples
-### Accelerometer and gyroscope offset computation
-### Comparison of mocap and IMU-based head-tilt estimates
-### Plotting Head-tilt maps
-### IMU-extracted features describing lesion-induced deficits
+A few notebooks along with short data sequences are available in the [notebooks](notebooks) folder. These notebooks are designed to illustrate how the main analysis pipelines presented in the paper can be used on your own data but **not to replicate the exact panels of the article** (you can get in touch with me if you want more information, code for the full analysis pipelines including the preprocessing or a more complete dataset).
+
+The [notebooks](notebooks) folder contains, in addition to a folder for the data samples:
+
+- **[head_tilt_maps.ipynb](notebooks/head_tilt_maps.ipynb)**, code examples for estimating the gravitational component of 3-axis accelerometer data with [rfayat/madgwick_imu](https://github.com/rfayat/madgwick_imu),  generating head-tilt maps (i.e. histograms on the sphere) using [rfayat/angle_visualization](https://github.com/rfayat/angle_visualization) and fitting a von Mises-Fisher distribution on the result with [rfayat/SphereProba](https://github.com/rfayat/SphereProba).
+- **[offset_computation.ipynb](notebooks/offset_computation.ipynb)**, code example for estimating accelerometer and gyroscope offsets from data corresponding to a multi-point tumble test using `IMU_Calibrator` from [imu_helpers.offset_computation](imu_helpers/offset_computation.py).
+- **[head_tilt_features.ipynb](notebooks/head_tilt_features.ipynb)**, examples of a few IMU-based metrics for measuring the impact of a lesion on the animal's posture / behavior.

@@ -52,7 +52,7 @@ def get_immobility(gyr_norm, sr=300, treshold=12.,
 
     # Merge immobility periods close in time
     merging_idx = int(merging_time * sr)
-    is_immobile = dilate_erode(is_immobile, width=merging_idx)
+    is_immobile = dilate_erode(is_immobile, width=int(merging_idx / 2))
 
     # Remove short immobility periods
     minimal_duration_idx = int(minimal_duration * sr)
