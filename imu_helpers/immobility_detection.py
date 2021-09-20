@@ -2,7 +2,6 @@
 
 Author: Romain Fayat, July 2021
 """
-import numpy as np
 from .numpy_helpers import dilate_erode, erode_dilate
 from scipy.ndimage import gaussian_filter
 
