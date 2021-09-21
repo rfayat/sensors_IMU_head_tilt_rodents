@@ -1,11 +1,23 @@
 # Inertial measurement of head tilt in rodents: principles and applications to vestibular research
 
-This repository contains code examples and preprocessed data samples allowing to replicate the main analysis pipelines presented in **Fayat et al., 2021**, published in the [special issue dedicated to "Advances in Inertial Sensors" by the journal Sensors](https://www.mdpi.com/journal/sensors/special_issues/iertial_sensors).
+This repository contains code examples and preprocessed data samples allowing to replicate the main analysis pipelines presented in [**Fayat et al., 2021 (DOI:10.3390/s21186318)**](https://www.mdpi.com/1424-8220/21/18/6318), published in the [special issue dedicated to "Advances in Inertial Sensors" by the journal Sensors](https://www.mdpi.com/journal/sensors/special_issues/iertial_sensors).
 
 If you use parts of this code in a scientific publication, please be kind enough to include a citation of the original paper:
 
 ```bibtex
-Bibtex reference, to be done upon publication
+@Article{s21186318,
+AUTHOR = {Fayat, Romain and Delgado Betancourt, Viviana and Goyallon, Thibault and Petremann, Mathieu and Liaudet, Pauline and Descossy, Vincent and Reveret, Lionel and Dugué, Guillaume P.},
+TITLE = {Inertial Measurement of Head Tilt in Rodents: Principles and Applications to Vestibular Research},
+JOURNAL = {Sensors},
+VOLUME = {21},
+YEAR = {2021},
+NUMBER = {18},
+ARTICLE-NUMBER = {6318},
+URL = {https://www.mdpi.com/1424-8220/21/18/6318},
+ISSN = {1424-8220},
+ABSTRACT = {Inertial sensors are increasingly used in rodent research, in particular for estimating head orientation relative to gravity, or head tilt. Despite this growing interest, the accuracy of tilt estimates computed from rodent head inertial data has never been assessed. Using readily available inertial measurement units mounted onto the head of freely moving rats, we benchmarked a set of tilt estimation methods against concurrent 3D optical motion capture. We show that, while low-pass filtered head acceleration signals only provided reliable tilt estimates in static conditions, sensor calibration combined with an appropriate choice of orientation filter and parameters could yield average tilt estimation errors below 1.5∘ during movement. We then illustrate an application of inertial head tilt measurements in a preclinical rat model of unilateral vestibular lesion and propose a set of metrics describing the severity of associated postural and motor symptoms and the time course of recovery. We conclude that headborne inertial sensors are an attractive tool for quantitative rodent behavioral analysis in general and for the study of vestibulo-postural functions in particular.},
+DOI = {10.3390/s21186318}
+}
 ```
 
 If you find a bug or want me to add code for an additional specific pipeline presented in the paper, feel free to open an issue on github, I'll do my best to process your request in a reasonable amount of time.
